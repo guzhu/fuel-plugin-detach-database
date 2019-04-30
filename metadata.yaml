@@ -7,11 +7,11 @@ version: '1.1.0'
 # Description
 description: Creates separate Database role for deploying
 # Required fuel version
-fuel_version: ['9.0']
+fuel_version: ['11.0']
 # Specify license of your plugin
 licenses: ['Apache License Version 2.0']
 # Specify author or company name
-authors: ['Matthew Mosesohn','Mirantis']
+authors: ['wangqing@umcloud.com']
 # A link to the plugin's page
 homepage: 'https://github.com/stackforge/fuel-plugins'
 # Specify a group which your plugin implements, possible options:
@@ -24,12 +24,7 @@ is_hotpluggable: false
 # The plugin is compatible with releases in the list
 releases:
   - os: ubuntu
-    version: mitaka-9.0
-    mode: ['ha']
-    deployment_scripts_path: deployment_scripts/
-    repository_path: repositories/ubuntu
-  - os: ubuntu
-    version: newton-10.0
+    version: pike-11.0
     mode: ['ha']
     deployment_scripts_path: deployment_scripts/
     repository_path: repositories/ubuntu
