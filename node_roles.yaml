@@ -1,5 +1,6 @@
 standalone-database:
   name: "Database"
+  group: "base"
   description: "Separated DB from controller"
   has_primary: true                 # whether has primary role or not
   public_ip_required: false         # whether requires public net or not

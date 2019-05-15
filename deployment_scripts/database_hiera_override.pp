@@ -1,9 +1,11 @@
 notice('MODULAR: detach-database/database_hiera_override.pp')
 
 $detach_database_plugin = hiera('detach-database', undef)
+$facter_dir = '/etc/facter/facts.d'
 $hiera_dir = '/etc/hiera/plugins'
 $plugin_name = 'detach-database'
 $plugin_yaml = "${plugin_name}.yaml"
+$plugin_sh = "${plugin_name}.sh"
 
 if $detach_database_plugin {
   $network_metadata = hiera_hash('network_metadata')
@@ -56,6 +58,13 @@ if $detach_database_plugin {
   $calculated_content = inline_template('
 primary_database: <%= @primary_database %>
 database_vip: <%= @database_vip %>
+<% if @primary_database -%>
+database_roles:
+<%
+@database_roles.each do |crole|
+%>  - <%= crole %>
+<% end -%>
+<% end -%>
 <% if @database_nodes -%>
 <% require "yaml" -%>
 database_nodes:
@@ -104,7 +113,11 @@ deploy_vrouter: <%= @deploy_vrouter %>
     ensure  => file,
     content => "${detach_database_plugin['yaml_additional_config']}\n${calculated_content}\n",
   }
-
+  file { "${facter_dir}/${plugin_sh}":
+    ensure  => file,
+    mode    => "755",
+    content => "#!/bin/bash\nver=`mysql -s -N -e 'select version()'`\necho \"mysqld_version=\$ver\"",
+  }
   package {'ruby-deep-merge':
     ensure  => 'installed',
   }

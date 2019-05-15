@@ -6,7 +6,8 @@ $mysqld_ipaddresses       = hiera('mysqld_ipaddresses')
 $mysqld_names             = hiera('mysqld_names')
 $database_vip             = hiera('database_vip')
 
-Haproxy::Service        { use_include => true }
+#Haproxy::Service        { use_include => true }
+include haproxy::params
 Haproxy::Balancermember { use_include => true }
 
 if ($custom_mysql_setup_class in ['galera', 'percona', 'percona_packages']) {
@@ -18,4 +19,3 @@ if ($custom_mysql_setup_class in ['galera', 'percona', 'percona_packages']) {
     internal_virtual_ip   => $database_vip,
   }
 }
-
