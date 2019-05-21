@@ -55,6 +55,10 @@ if $detach_database_plugin {
     }
   }
   ###################
+
+$yaml_database_nodes = {"database_nodes" => $database_nodes}
+$yaml_corosync_nodes= {"corosync_nodes" => $corosync_nodes}
+
   $calculated_content = inline_template('
 primary_database: <%= @primary_database %>
 database_vip: <%= @database_vip %>
@@ -67,8 +71,7 @@ database_roles:
 <% end -%>
 <% if @database_nodes -%>
 <% require "yaml" -%>
-database_nodes:
-<%= YAML.dump(@database_nodes).sub(/--- *$/,"") %>
+<%= YAML.dump(@yaml_database_nodes).sub(/--- *$/,"") %>
 <% end -%>
 mysqld_ipaddresses:
 <% if @database_nodes_ips -%>
@@ -89,8 +92,7 @@ mysql:
 primary_controller: <%= @primary_controller %>
 <% if @corosync_nodes -%>
 <% require "yaml" -%>
-corosync_nodes:
-<%= YAML.dump(@corosync_nodes).sub(/--- *$/,"") %>
+<%= YAML.dump(@yaml_corosync_nodes).sub(/--- *$/,"") %>
 <% end -%>
 <% if @corosync_roles -%>
 corosync_roles:
